@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantom Ordering</title>
+    <link rel="stylesheet" href="CSS/quant.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="mobile-container">
+        
+        <header id="main-header" style="display: none;"> 
+            <div class="header-left">
+                <button id="back-btn" class="nav-icon" onclick="goBack()">←</button>
+                <div class="header-logo" onclick="showPage('login-page')">
+                    <img src="asset/quantom logo.jpeg" alt="Quantom Logo">
+                </div>
+            </div>
+        
+            <div id="cart-indicator" onclick="tryGoToCheckout()">
+                <span class="cart-emoji">🛒</span>
+                <span id="count">0</span>
+            </div>
+        </header>
+
+        <section id="login-page" class="page">
+            <div class="login-box">
+                <div class="logo-circle"><img src="asset/quantom logo.jpeg" alt="Quantom Logo"></div>
+                <h2>Welcome to Quantom</h2>
+                <p>Login to start ordering</p>
+                <input type="text" id="username" placeholder="Username">
+                <input type="password" id="password" placeholder="Password">
+                <button class="pay-btn" onclick="handleLogin()">Login</button>
+                <button class="guest-btn" onclick="continueAsGuest()">Continue as Guest</button>
+                <p style="font-size: 0.8rem; color: #666;">
+                    Don't have an account? <span style="color: var(--accent); cursor: pointer;" onclick="showPage('signup-page')">Sign Up</span>
+                </p>
+            </div>
+        </section>
+
+        <section id="signup-page" class="page" style="display: none;">
+            <div class="login-box">
+                <div class="logo-circle"><img src="asset/quantom logo.jpeg" alt="Quantom Logo"></div>
+                <h2>Create Account</h2>
+                <input type="text" id="signup-name" placeholder="Full Name">
+                <input type="text" id="signup-email" placeholder="Email Address">
+                <input type="password" id="signup-pass" placeholder="Password">
+                <button class="pay-btn" onclick="handleSignUp()">Sign Up</button>
+                <p style="font-size: 0.8rem;">Already have an account? <span style="color:var(--accent); cursor:pointer;" onclick="showPage('login-page')">Login</span></p>
+            </div>
+        </section>
+
+        <section id="home-page" class="page" style="display: none;">
+            <div class="home-hero">
+                <h1>Welcome to Quantom</h1>
+                <p>The future of fast food is here.</p>
+                <button class="pay-btn" onclick="showPage('menu-page')">Start Ordering</button>
+            </div>
+            
+            <div class="featured-section">
+                <h3>Featured Today</h3>
+                <div class="featured-card" onclick="showPage('menu-page')">
+                    <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500" alt="Burger">
+                    <div class="featured-badge">Hot Deal</div>
+                    <h4>Beef Burger</h4>
+                    <p>Rp 55.000</p>
+                </div>
+            </div>
+
+            <div class="featured-section" style="margin-top: 20px;">
+                <h3>Recommended for You</h3>
+                <div class="recommended-container" style="display: flex; gap: 15px; overflow-x: auto; padding-bottom: 10px;">
+                    
+                    <div class="featured-card" style="min-width: 160px; flex: 1;" onclick="showPage('menu-page')">
+                        <img src="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500" alt="Spicy Chicken">
+                        <h4>Spicy Chicken</h4>
+                        <p>Rp 48.000</p>
+                    </div>
+
+                    <div class="featured-card" style="min-width: 160px; flex: 1;" onclick="showPage('menu-page')">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500" alt="Rice Bowl">
+                        <h4>Rice Bowl</h4>
+                        <p>Rp 42.000</p>
+                    </div>
+
+                    <div class="featured-card" style="min-width: 160px; flex: 1;" onclick="showPage('menu-page')">
+                        <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=500" alt="Sundae">
+                        <h4>Sundae</h4>
+                        <p>Rp 18.000</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="menu-page" class="page" style="display: none;">
+            <div class="banner">FRESH. FAST. QUANTOM.</div>
+            <div id="menu-grid"></div>
+            <div id="checkout-bar" style="display: none;">
+                <div class="bar-info">
+                    <span id="bar-count">0</span> items | <span id="bar-total">Rp 0</span>
+                </div>
+                <button class="view-cart-btn" onclick="showPage('order-mode-page')">Checkout</button>
+            </div>
+        </section>
+
+        <section id="order-mode-page" class="page" style="display:none;">
+            <h2>Choose Service</h2>
+            <button class="mode-btn" onclick="setMode('delivery')">🛵 Delivery</button>
+            <button class="mode-btn" onclick="setMode('pickup')">🛍️ Pick-up</button>
+        </section>
+
+        <section id="pickup-page" class="page" style="display:none;">
+            <h2>Select Store</h2>
+            <div class="location-list">
+                <button class="loc-item" onclick="confirmDetails('Quantom Sudirman')">Quantom Sudirman (2.4km)</button>
+                <button class="loc-item" onclick="confirmDetails('Quantom Menteng')">Quantom Menteng (4.1km)</button>
+                <button class="loc-item" onclick="confirmDetails('Quantom Kemang')">Quantom Kemang (5.8km)</button>
+            </div>
+        </section>
+
+        <section id="delivery-page" class="page" style="display:none;">
+            <h2>Delivery Address</h2>
+            <textarea id="address-input" placeholder="Type your full address here..."></textarea>
+            <button class="confirm-btn" onclick="confirmDetails()">Confirm Address</button>
+        </section>
+
+        <section id="payment-page" class="page" style="display:none;">
+            <h2>Payment</h2>
+            <div class="summary-box">
+                <p id="order-info-text" style="font-weight: 600; color: var(--dark);"></p>
+                <hr>
+                <div class="promo-section">
+                    <input type="text" id="promo-input" placeholder="Promo Code (Try: Q20)">
+                    <button class="apply-btn" onclick="applyPromo()">Apply</button>
+                </div>
+                <p id="discount-text" style="color: #4CAF50; display: none; font-size: 0.85rem; margin-top: 5px;"></p>
+                <h2 id="final-total" style="margin-top: 10px;"></h2>
+            </div>
+
+            <div id="payment-selection" style="margin-top: 20px;">
+                <p style="font-weight: bold; margin-bottom: 10px;">Select Method:</p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;">
+                    <button class="mode-btn" onclick="selectPaymentBranch('qr')">📲 QRIS</button>
+                    <button id="cash-choice-btn" class="mode-btn" onclick="selectPaymentBranch('cash')">💵 Cash</button>
+                </div>
+            </div>
+
+            <div id="payment-branch-area">
+                <p style="color: #999; text-align: center; font-size: 0.8rem; font-style: italic;">
+                    Please select a payment method above.
+                </p>
+            </div>
+        </section>
+
+        <section id="order-status-page" class="page" style="display:none;">
+            <div class="status-container">
+            </div>
+        </section>
+
+        <div id="flavor-modal" class="overlay" style="display:none;">
+            <div class="selection-card">
+                <h3>Choose Flavor</h3>
+                <p>Pick your favorite Sundae flavor:</p>
+                <button class="mode-btn" onclick="selectFlavor('Strawberry')">🍓 Strawberry</button>
+                <button class="mode-btn" onclick="selectFlavor('Chocolate')">🍫 Chocolate</button>
+                <button class="confirm-btn" style="background: #666;" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+
+        <nav class="bottom-nav" id="bottom-nav" style="display: none;">
+            <div class="nav-item active" id="nav-home" onclick="showPage('home-page')">
+                <span class="nav-icon-main">🏠</span>
+                <span>Home</span>
+            </div>
+            <div class="nav-item" id="nav-menu" onclick="showPage('menu-page')">
+                <span class="nav-icon-main">🍔</span>
+                <span>Menu</span>
+            </div>
+            <div class="nav-item" id="nav-status" onclick="showPage('order-status-page')">
+                <span class="nav-icon-main">📋</span>
+                <span>Status</span>
+            </div>
+        </nav>
+
+    </div> 
+    <script src="js/quantom.js"></script>
+</body>
+</html>
